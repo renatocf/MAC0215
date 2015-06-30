@@ -6,7 +6,7 @@
     <title>MAC0215 by renatocf</title>
 
     <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -41,6 +41,72 @@
 <p>A versão final do pôster do 22ª SIICUSP está abaixo e disponível neste <a href="https://github.com/renatocf/MAC0215/blob/gh-pages/docs/siicusp2014_RenatoCordeiro.pdf">link</a> em formado PDF:</p>
 
 <p><img src="https://raw.githubusercontent.com/renatocf/MAC0215/gh-pages/docs/siicusp2014_RenatoCordeiro.png" alt="SIICUSP 2014"></p>
+
+<h3>
+<a id="semanas-02-03-1903---0104" class="anchor" href="#semanas-02-03-1903---0104" aria-hidden="true"><span class="octicon octicon-link"></span></a>Semanas 02-03 (19/03 - 01/04)</h3>
+
+<p>Em conversa com o meu orientador, comentamos sobre os resultados da predição do MYOP e do Augustus no genoma do Sorgo. foram muito aquém do esperado. Além disso, o resultado do MYOP mostrou-se inferior ao do Augustus, o contrário do observado na maioria dos conjuntos de validação.</p>
+
+<p>Durante estas semanas, levantamos hipóteses a serem exploradas sobre os resultados inesperados:</p>
+
+<p><a name="sorghum_hypothesis_1"></a>
+1. <strong>Grande número de genes com apenas um éxon:</strong> <br>
+  De forma geral, os preditores de genes tratam genes de éxon único de maneira diferente de genes com éxons e íntrons. Como este modelo estatístico separado pode sofrer um viés diferente, muitos desses genes poderiam prejudicar a predição. Para testar isso, preciso separar os éxons únicos (<em>single exons</em>) e múltiplos (<em>multiple exons</em>), e coletar as estatísticas de sensibilidade e precisão para cada uma delas.</p>
+
+<p><a name="sorghum_hypothesis_2"></a>
+2. <strong>Segmentos não codificantes misturados nos ESTs:</strong> <br>
+  Em geral, regiões não codificantes do DNA podem ser parecidas com genes de apenas um éxon. Se os ESTs (<em>expressed sequence tag</em>) estiverem contaminados com tais sequências, elas podem prejudicar as predições. Uma possível solução é passar um classificador de regiões não-codificantes sobre os ESTs, e tentaar separa os resultados bons e ruins.</p>
+
+<p><a name="sorghum_hypothesis_3"></a>
+3. <strong>Conjunto de treinamento maior no Augustus:</strong> <br>
+  O modelo de treinamento de milho, usado no MYOP, pode ter sido feito com apenas 2000 genes. O Augustus, em geral, usa todos os genes disponíveis para criar seus conjuntos de treinamento. Isso pode explicar o melhor desempenho do Augustus sobre o MYOP, pois quanto maior o treinamento, melhor tende a ser a predição.</p>
+
+<h3>
+<a id="semanas-0405-0204---1504" class="anchor" href="#semanas-0405-0204---1504" aria-hidden="true"><span class="octicon octicon-link"></span></a>Semanas 04/05 (02/04 - 15/04)</h3>
+
+<p>Decidimos testar as hipóteses levantadas nas últimas semanas segundo a dificuldade de realização. Começamos, então, pelo <a href="#sorhum_hypothesys_1">item 1</a>, e verificar a quantidade de genes com éxons únicos. Para isso, foi necessário dividir os genes mapeados pelo PASA em dois conjuntos: os com apenas um e os com vários CDS (<em>Coding Sequences</em>).</p>
+
+<p>Dado que as predições do SGEval são usadas como referência para contagens, não é necessário alterar as predições do MYOP e Augustus. As comparações foram feitas em cada um dos 10 cromossomos, e as contagens foram somadas para gerar precisão / sensibilidade com relação a todo o organismo. Para melhor visualização, criei diagramas de Venn para cada caso.</p>
+
+<p>Não foi possível determinar os valores de sensibilidade precisão para os éxons únicos, pois não podemos calcular os falsos positivos. De maneira contrária ao que imaginamos, os éxons múltiplos tiveram resultados piores que os de éxons únicos. Nas próximas semanas, tentaremos explorar mais algumas possibilidades para a predição do Sorgo.</p>
+
+<h3>
+<a id="semanas-0607---1604---2904" class="anchor" href="#semanas-0607---1604---2904" aria-hidden="true"><span class="octicon octicon-link"></span></a>Semanas 06/07 - (16/04 - 29/04)</h3>
+
+<p>Continuando com os experimentos sobre o genoma do Sorgo, resolvemos analisar a <a href="#sorhum_hypothesys_3">hipótese 3</a>. Percebemos, então, que o conjunto de treinamento utilizado nos testes do Augustus foi o disponibilizado no site do preditor de genes. Isso leva a uma comparação injusta, dado que esse conjunto foi montado com genes diferentes dos utilizados no conjunto de treinamento do MYOP. Para resolver esse problema, aprendi como fazer o treinamento de modelos no Augustus e no MYOP. Retreinei ambos os preditores com 2000 genes curados utilizados na validação do MYOP. Com base nele, repeti a predição de genes do MYOP e do Augustus, e comparei os resultados com o SGEval com todos os genes, SGEval com genes de éxon único e SGEval com genes de éxons múltiplos .</p>
+
+<h3>
+<a id="semanas-0809---3004---1305" class="anchor" href="#semanas-0809---3004---1305" aria-hidden="true"><span class="octicon octicon-link"></span></a>Semanas 08/09 - (30/04 - 13/05)</h3>
+
+<p>Na primeira semana, conversei com o doutorando Almir José Ferreira sobre o processo de anotação do genoma do <em>Epicoccum nigrum</em>, que é tema do seu trabalho de doutorado. Desde o início do semestre, ele tem procurado genes que possam ser utilizados como conjunto de treinamento para a anotação que eu realizarei. De início, ele buscou genes do <em>Aspergillus nidulans</em> - fungo modelo em estudos de biologia molecular -, mas não conseguiu encontrar um <em>dataset</em> que servisse como um bom conjunto de treinamento. Alternativamente, ele treinou e encontrou genes utilizando o Augustus, e os validou fazendo alinhamentos dos genes encontrados com o banco de dados SWISSPROT.</p>
+
+<p>Na segunda semana, instalei os <em>scripts</em> que utilizei na minha iniciação científica para num servidor remoto para que eu pudesse rodar os experimentos da anotação. Entretanto, os arquivos com genes (extensão .gtf) enviados pelo Almir não passaram pelo validador que verifica a consistência dos dados armazenados em arquivos dessa extensão. Pedi para que o Almir analise os dados gerados por ele e corrija as inconsistências antes que eu possa rodar os experimentos.</p>
+
+<h3>
+<a id="semanas-1011---1405---2705" class="anchor" href="#semanas-1011---1405---2705" aria-hidden="true"><span class="octicon octicon-link"></span></a>Semanas 10/11 - (14/05 - 27/05)</h3>
+
+<p>Atendendo o pedido pedido do meu orientador, escrevi uma revisão completa dos experimentos feitos para a predição do Sorgo. Analisamos, com mais detalhes, todas as tentativas já feitas, tentando encontrar possíveis falhas nos experimentos realizados até o momento. Durante nossa conversa, percebemos que ao gerar a predição de referência com o PASA, fizemos o alinhamento dos ESTs do Sorgo com cada cromossomo separadamente. Isso pode ter gerado alinhamentos espúrios, nos quais o PASA identificou como gene um alinhamento ótimo de um cromossomo, mas que era apenas uma cópia cujo alinhamento não era ótimo para o genoma completo. Como próximos experimentos, precisamos alinhar os ESTs com os 10 cromossomos do Sorgo juntos, usando a predição de referência gerada como comparação com a predição para os 10 cromossomos do MYOP e do Augustus.</p>
+
+<p>Com relação à predição do <em>Epicoccum</em>, recebi o arquivo com genes (extensão .gtf) corrigido, e os passei pelo validador. No total, o Almir conseguiu coletar 439 genes com alta cobertura no SWISSPROT. Para começar a anotação, preciso rodar vários experimentos de validação cruzada <em>5-fold</em> com o MYOP, usando quantidades crescentes de genes no conjunto de treinamento. O objetivo é verificar se o conjunto de treinamento é grande o suficiente para que possamos aproveitar todo o potencial do preditor de genes. Para isso, traçaremos gráficos de <code>sensibilidade x tamanho da sequência</code>,  <code>precisão x tamanho da sequência</code> e <code>F-score x tamanho da sequência</code>, que permitirão verificar se as estatísticas estão mudando muito com tamanhos maiores (se houve convergência do modelo probabilístico do MYOP).  Montei novos <em>scripts</em> e reusei alguns antigos feitos por outros colegas do nosso grupo de pesquisa para automatizar esses experimentos. Porém, novamente, os arquivos estão falhando. Entrei em contato com o Almir para verificarmos que tipo de problema está ocorrendo.</p>
+
+<h3>
+<a id="semanas-1213---2805---1006" class="anchor" href="#semanas-1213---2805---1006" aria-hidden="true"><span class="octicon octicon-link"></span></a>Semanas 12/13 - (28/05 - 10/06)</h3>
+
+<p>Conversando com alguns colegas do grupo de pesquisa, encontrei o erro que estava acontecendo ao rodar o MYOP. Um dos programas auxiliares do preditor (SegSeq), que monta o modelo probabilístico utilizado por ele (GHMM), precisava que um dos campos do arquivo com genes (extensão .gtf) estivesse na ordem inversa à produzida pelo Augustus. Isso causava uma confusão quando o programa lia o arquivo, e impedia o treinamento do MYOP de prosseguir. Fiz um pequeno <em>script</em> para corrigir esse problema, e o colega do grupo que implementou o SegSeq criou um novo <em>patch</em> permitindo que o programa lesse as partes do arquivo com ou sem inversão.</p>
+
+<p>Enquanto esperava os experimentos terminarem de rodar, usei o PASA para alinhar os ESTs com os 10 cromossomos do Sorgo juntos. Peguei o resultado e coloquei o SGEval para rodar comparando a predição de referência do PASA com as predições do MYOP e do Augustus sobre os 10 cromossomos. Entretanto, mesmo rodando durante horas, o processo do SGEval tem sumido silenciosamente, sem nenhum erro na saída padrão ou de erros. Preciso conversar com meu orientador e o membro do nossos grupo de pesquisas que implementou o programa para tentar descobrir porque isso ocorreu.</p>
+
+<h3>
+<a id="semana-14-1106---1706" class="anchor" href="#semana-14-1106---1706" aria-hidden="true"><span class="octicon octicon-link"></span></a>Semana 14 (11/06 - 17/06)</h3>
+
+<p>Depois de conversar criador do SGEval, ele me alertou que o programa possivelmente não funcionaria para uma quantidade muito grande de sequências (na escala de um genoma completo). Ao tratar desse assunto com meu orientador, ele recomendou que eu repetisse o experimento em outro servidor - com muito mais memória - e rodasse o programa. Depois de 3 dias ininterruptos de processamento, o SGEval chegou a quase 33% de uso de memória do servidor, totalizando mais de 300Gb. Quando terminou, os resultados obtidos foram absurdos (com valores de probabilidades maiores que 10). Isso nos levou a considerar que, como possível projeto futuro, o SGEval precisa de uma série de melhorias, incluindo uma reimplementação numa linguagem mais eficiente como C/C++ (atualmente, ele foi programado em Perl).</p>
+
+<p>Paralelamente, calculei as médias e variâncias de sensibilidade, precisão e F-score para cada um dos 6 experimentos de validação cruzada. Procurei uma ferramenta que permitisse criar os gráficos e os levei para o meu orientador. Concluímos, analisando as curvas, que possivelmente o MYOP não chegou ao seu potencial máximo. Entretanto, dado a dificuldade para encontrar os genes de treinamento atualmente disponíveis, iremos prosseguir com o processo de anotação usando os 439 genes. Como passo seguinte, iremos repetir o teste de convergência do modelo probabilístico para o Augustus, para que possamos comparar o desempenho de ambos os preditores sobre esse conjunto controlado. Entretanto, dada a crescente indisponibilidade de tempo causada pelo final do semestre e o fim da disciplina, esse trabalho pode não ser concluído a tempo do final da disciplina.</p>
+
+<h3>
+<a id="semanas-1516---1806---2906" class="anchor" href="#semanas-1516---1806---2906" aria-hidden="true"><span class="octicon octicon-link"></span></a>Semanas 15/16 - (18/06 - 29/06)</h3>
+
+<p>Neste período, vou reunir e organizar os dados obtidos durante o projeto, para criar os diagramas e tabelas de LaTeX que usarei no pôster e relatório final. As atividades que restaram da anotação do <em>Epicoccum</em> e do <em>Sorghum</em> ficarão como trabalhos futuros, não concluídos por indisponibilidade de tempo no final do semestre.</p>
       </section>
       <footer>
         <p>This project is maintained by <a href="https://github.com/renatocf">renatocf</a></p>
